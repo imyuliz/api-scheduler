@@ -34,6 +34,9 @@ Proposal
 
 ### Ø Conclusion
 
+<h5 align="right">Created in Chengdu rainy night</h5>
+
+
 ### 特性
 
 1. `git push` 提交代码时, 自动 `lint`,`test`,`push`, `docker build`,`docker push`到dockerhub 镜像仓库
