@@ -34,45 +34,7 @@ Proposal
 
 ### Ø Conclusion
 
-<h5 align="right">Created in Chengdu rainy night</h5>
-
-
-### 特性
-
-1. `git push` 提交代码时, 自动 `lint`,`test`,`push`, `docker build`,`docker push`到dockerhub 镜像仓库
-2. 当需要添加`tag` 时, 自动构建对应`tag`的 `docker image`
-3. docker image 遵从尽可能小为原则(基于多阶段构建,暂未使用压缩二进制手段), 最小镜像500KB
-4. 丰富的 `makefile`命令
-5. 基于`CodeCov` 自动生成测试覆盖率
-6. 将`commitid`,`BuildGoVersion`,`BuildSystem` 写入二进制中, 启动时日志可见,有利于版本和问题定位
-7. `runner`无需`Go`环境仍可以正常构建镜像,基于`docker`多阶段构建
-8. 镜像极小，镜像只有500KiB, 缺点是: 不可以exec 进入容器，在问题排查的时候可能会很困难，暂不适合于生产，如需要生产使用，替换基础镜像即可
-
-### 如何使用?
-
-使用此模板创建项目后:
-
-1. 执行`go mod init`  例如: `go mod init github.com/imyuliz/template-go`
-
-2. 修改`Makefile`文件中的最顶端的变量`PROJECT_NAME`为go mod init指定的项目名字,例如: `PROJECT_NAME := "github.com/imyuliz/template-go"`
-
-3. 如需支持 `特性5`, 需要在`对应仓库`->`Settings`->`Secrets` 创建秘钥`CODECOV_TOKEN`, 对应值请登录: https://www.codecov.io/ 使用GitHub 关联登录,然后导入对应仓库后自动生成值,然后回写至 github 仓库秘钥
-
-4. 修改相关配置 
-    1. 如需支持推送镜像到`dockerhub`, 为对应仓库配置秘钥`DOCKERHUB_USERNAME`和`DOCKERHUB_PASSWORD`,
-    2. 在仓库配置秘钥`IMAGE_NAME`来指定镜像名字，例如: `imyuliz/template-go`
-
-
-### 遇到问题如何处理?
-1. 主题思路请参考: https://gocn.vip/topics/9839
-2. 如想查找丰富的Action库,官方地址: https://github.com/marketplace?type=actions
-3. 如需基于此模板自定义action,请查看GitHub Actions Workflow 的完整语法: https://help.github.com/articles/workflow-syntax-for-github-actions
-4. 如需修改`docker`镜像推送仓库或者触发配置等一些列问题(如推送到指定仓库)请查看 README: https://github.com/imyuliz/Publish-Docker-Github-Action
-5. 如关注自动发布细节信息 https://github.com/marketplace/actions/goreleaser-action
-6. 如想讨论如何构建Go 最小镜像 https://juejin.im/post/6844904174396637197 https://juejin.im/post/6844904174396637197 https://gocn.vip/topics/10359
-7. google
-
-
+<h5 align="right">Created in ChengDU rainy night</h5>
 
 ### 常见命令
 
