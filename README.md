@@ -15,8 +15,24 @@
 ---
 
 
-for Go project.
+Proposal
 ---
+
+### Ø Introduction
+
+### Ø Proposal
+
+### Ø Plan of Action
+
+### Ø Will it work?
+
+### Ø Desired outcomes
+
+### Ø Necessary Resources
+
+### Ø Preparations Made
+
+### Ø Conclusion
 
 ### 特性
 
