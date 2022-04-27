@@ -1,0 +1,52 @@
+# base on :  https://github.com/marketplace/actions/goreleaser-action
+name: Release
+on:
+  create:
+    tags:
+    - v*
+
+jobs:
+  release:
+    name: Release on GitHub
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Validates GO releaser config
+      uses: goreleaser/goreleaser-action@v2
+      with:
+        args: check
+
+    - name: Create release on GitHub
+      uses: goreleaser/goreleaser-action@v2
+      with:
+        args: release
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  build:
+    name: Release on Dockerhub
+    runs-on: ubuntu-latest 
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.13
+
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Build
+        run: make build
+      - name: Get release version
+        id: get_version
+        run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
+      - name: Build and push image to dockerhub
+        uses: imyuliz/Publish-Docker-Github-Action@master
+        with:
+          name: ${{ secrets.IMAGE_NAME }}
+          # docker build -t template-go -f build/docker/Dockerfile .
+          dockerfile: build/docker/Dockerfile
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          tags: "latest,${{ env.RELEASE_VERSION }}"
