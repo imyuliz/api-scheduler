@@ -1,12 +1,12 @@
 
 <p align="center">
   <img alt="GoReleaser Logo" src="https://avatars2.githubusercontent.com/u/24697112?v=3&s=200" height="140" />
-  <h3 align="center">Template-go</h3>
+  <h3 align="center">API-Scheduler</h3>
   <p align="center">
-    <a href="https://github.com/imyuliz/template-go/releases/latest"><img alt="Codecov" src="https://img.shields.io/github/v/release/imyuliz/template-go.svg?logo=github&style=flat-square"></a>
-    <a href="https://codecov.io/gh/imyuliz/template-go"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/imyuliz/template-go?logo=codecov&style=flat-square"></a>
-    <a href="https://github.com/imyuliz/template-go/actions?query=workflow%3A%22Lint+Test+Build%22"><img alt="GitHub marketplace" src="https://github.com/imyuliz/template-go/workflows/Lint%20Test%20Build/badge.svg"></a>
-    <a href="https://github.com/imyuliz/template-go/actions?query=workflow%3ARelease"><img alt="GitHub release" src="https://github.com/imyuliz/template-go/workflows/Release/badge.svg"></a>
+    <a href="https://github.com/imyuliz/api-scheduler/releases/latest"><img alt="Codecov" src="https://img.shields.io/github/v/release/imyuliz/api-scheduler.svg?logo=github&style=flat-square"></a>
+    <a href="https://codecov.io/gh/imyuliz/api-scheduler"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/imyuliz/api-scheduler?logo=codecov&style=flat-square"></a>
+    <a href="https://github.com/imyuliz/api-scheduler/actions?query=workflow%3A%22Lint+Test+Build%22"><img alt="GitHub marketplace" src="https://github.com/imyuliz/api-scheduler/workflows/Lint%20Test%20Build/badge.svg"></a>
+    <a href="https://github.com/imyuliz/api-scheduler/actions?query=workflow%3ARelease"><img alt="GitHub release" src="https://github.com/imyuliz/api-scheduler/workflows/Release/badge.svg"></a>
     
   
   </p>
@@ -14,7 +14,8 @@
 
 ---
 
-template for Go project.
+
+for Go project.
 ---
 
 ### 特性
