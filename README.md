@@ -41,7 +41,6 @@ Proposal
 ### Ø Proposal
 
 API-Scheduler 从 API 流程调度出发，用户通过声明式的方式, 通过可视化，YAML，JSON 等方式编写流程调度文件（就像 Deployment 一样）， 声明接口依赖的服务和接口，最终输出什么数据，完成API 流程的串联，并将此接口统一向外暴露。并可以提供以下解决方案:
-
 * 声明式API设计, 用户声明资源对象，表达所需要的期望状态；
 * 原生支持 OpenTelemetry Tracing 规范;
 * 原生支持日志 TracingID, 让日志上下游清晰可见;

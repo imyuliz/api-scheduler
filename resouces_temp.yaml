@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Scheduler
+metadata:
+  name: get_user_name
+  namespace: devops
+  lables:
+    app: user
+spec:
+  path: /api/v1/user
+  failureThreshold: 4
+  method: get
+  condition:
+    header:
+      app-id: richardyu
+    body:
+      req.name: richardyu
+    query:
