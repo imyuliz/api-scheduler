@@ -1,4 +1,4 @@
-package main
+package test
 
 import "k8s.io/apimachinery/pkg/util/intstr"
 
