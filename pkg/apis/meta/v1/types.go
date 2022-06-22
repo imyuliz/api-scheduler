@@ -1,10 +1,25 @@
-package test
+package v1
 
 import (
 	"time"
 
 	"k8s.io/apimachinery/pkg/types"
 )
+
+type CreateOptions struct {
+}
+
+type UpdateOptions struct {
+}
+
+type DeleteOptions struct {
+}
+
+type GetOptions struct {
+}
+
+type ListOptions struct {
+}
 
 // UID is a type that holds unique ID values, including UUIDs.  Because we
 // don't ONLY use UUIDs, this is an alias to string.  Being a type captures

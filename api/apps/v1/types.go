@@ -1,17 +1,20 @@
-package test
+package v1
 
-import "k8s.io/apimachinery/pkg/util/intstr"
+import (
+	metav1 "github.com/imyuliz/api-scheduler/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
+)
 
-type Scheduler struct {
-	TypeMeta `json:",inline"`
+type Flow struct {
+	metav1.TypeMeta `json:",inline"`
 	// Standard object metadata.
 	// +optional
-	ObjectMeta `json:",inline"`
-	Spec       SchedulerSpec   `json:"spec"`
-	Status     SchedulerStatus `json:"status"`
+	metav1.ObjectMeta `json:",inline"`
+	Spec              FlowSpec   `json:"spec"`
+	Status            FlowStatus `json:"status"`
 }
 
-type SchedulerSpec struct {
+type FlowSpec struct {
 	// The path is http url
 	Path string `json:"path,omitempty"`
 
@@ -54,13 +57,13 @@ type SchedulerSpec struct {
 	Paused bool `json:"paused,omitempty" protobuf:"varint,7,opt,name=paused"`
 }
 
-type SchedulerStatus struct {
+type FlowStatus struct {
 	DataStoragePath string `json:"dataStoragePath,omitempty"`
 }
 
 type StepTemplateSpec struct {
-	ObjectMeta `json:",inline"`
-	Spec       StepSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+	metav1.ObjectMeta `json:",inline"`
+	Spec              StepSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 }
 
 type StepSpec struct {
