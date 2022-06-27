@@ -2,7 +2,7 @@ package v1
 
 import (
 	metav1 "github.com/imyuliz/api-scheduler/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/util/intstr"
+	"github.com/imyuliz/api-scheduler/pkg/util/intstr"
 )
 
 type Flow struct {

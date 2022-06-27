@@ -7,7 +7,7 @@ import (
 )
 
 type Context interface {
-	context.Context
+	// context.Context
 	WithTraceValue(key, value string)
 	TraceTrace(key string) string
 	pool.DataStorage
