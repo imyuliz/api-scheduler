@@ -1,6 +1,7 @@
 package frame
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
 	"net/http"
@@ -15,16 +16,13 @@ type Context struct {
 	Path   string
 	//response
 	HttpCode int
+	// router chain
+	handlers HandlersChain
+	index    int
 }
 
 // abortIndex represents a typical value used in abort functions.
 const abortIndex int8 = math.MaxInt8 >> 1 // 63
-
-func (c *Context) HTML(code int, html string) {
-	c.SetHeader("Content-Type", "text/html")
-	c.Status(code)
-	c.Write([]byte(html))
-}
 
 func newContext(w http.ResponseWriter, r *http.Request) *Context {
 	return &Context{
@@ -32,6 +30,15 @@ func newContext(w http.ResponseWriter, r *http.Request) *Context {
 		Request: r,
 		Method:  r.Method,
 		Path:    r.URL.Path,
+		index:   -1,
+	}
+}
+
+func (c *Context) Next() {
+	c.index++
+	for c.index < len(c.handlers) {
+		c.handlers[c.index](c)
+		c.index++
 	}
 }
 
@@ -54,6 +61,18 @@ func (c *Context) SetHeader(key string, value string) {
 	c.Writer.Header().Set(key, value)
 }
 
-func (c *Context) Next() {
+func (c *Context) JSON(code int, obj interface{}) {
+	c.SetHeader("Content-Type", "application/json")
+	c.Status(code)
+	data, err := json.Marshal(obj)
+	if err != nil {
+		http.Error(c.Writer, err.Error(), 500)
+	}
+	c.Write(data)
+}
 
+func (c *Context) HTML(code int, html string) {
+	c.SetHeader("Content-Type", "text/html")
+	c.Status(code)
+	c.Write([]byte(html))
 }
