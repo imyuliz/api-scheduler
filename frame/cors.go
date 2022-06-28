@@ -1,11 +1,9 @@
 package frame
 
-import "fmt"
+import "net/http"
 
 func Cors() HandlerFunc {
 	return func(c *Context) {
-		fmt.Println("hello world")
-		// c.Next()
-		fmt.Println("hello")
+		c.String(http.StatusOK, "403 NOT FOUND: %s\n", c.Path)
 	}
 }

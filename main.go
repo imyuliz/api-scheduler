@@ -13,7 +13,7 @@ func main() {
 	fmt.Printf("built on %20s\n", version.BuildGoVersion)
 	fmt.Printf("built on %20s\n", version.BuildSystem)
 	fmt.Println("Hi! I'm yulizz")
-	server := frame.NewServer()
+	server := frame.NewDefaultServer()
 	server.GET("/richardyu", func(c *frame.Context) {
 		c.HTML(200, "<h1>Hello RichardYu</h1>")
 	})

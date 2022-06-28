@@ -8,17 +8,13 @@ import (
 )
 
 type Context struct {
-	//write and request
-	Writer  http.ResponseWriter
-	Request *http.Request
-	//request info
-	Method string
-	Path   string
-	//response
-	HttpCode int
-	// router chain
-	handlers HandlersChain
-	index    int
+	Writer   http.ResponseWriter // http writer
+	Request  *http.Request       // http request
+	Method   string              // request method
+	Path     string              // request path
+	HTTPCode int                 //response code
+	handlers HandlersChain       // router chain
+	index    int                 // chain index
 }
 
 // abortIndex represents a typical value used in abort functions.
@@ -53,7 +49,7 @@ func (c *Context) Write(data []byte) {
 }
 
 func (c *Context) Status(code int) {
-	c.HttpCode = code
+	c.HTTPCode = code
 	c.Writer.WriteHeader(code)
 }
 
