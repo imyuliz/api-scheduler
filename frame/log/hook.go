@@ -7,15 +7,20 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var defaultLogFormatter = &logrus.JSONFormatter{
+	CallerPrettyfier: func(frame *runtime.Frame) (function string, file string) {
+		return frame.Function, path.Base(frame.File)
+	},
+}
+
 func init() {
+	// default log config
 	logrus.SetReportCaller(true)
 	// set file name
-	logrus.SetFormatter(&logrus.JSONFormatter{
-		CallerPrettyfier: func(frame *runtime.Frame) (function string, file string) {
-			return frame.Function, path.Base(frame.File)
-		},
-	})
+	logrus.SetFormatter(defaultLogFormatter)
 }
+
+var TraceKey = "trace_id"
 
 type Hook struct {
 	TraceID string
@@ -30,6 +35,6 @@ func (h *Hook) Levels() []logrus.Level {
 }
 
 func (h *Hook) Fire(entry *logrus.Entry) error {
-	entry.Data["TraceID"] = h.TraceID
+	entry.Data[TraceKey] = h.TraceID
 	return nil
 }

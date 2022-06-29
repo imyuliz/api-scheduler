@@ -5,37 +5,57 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+
+	"github.com/imyuliz/api-scheduler/frame/log"
+	"github.com/imyuliz/api-scheduler/frame/pool"
+	"github.com/imyuliz/api-scheduler/frame/trace"
+	"github.com/imyuliz/api-scheduler/scheduler"
 )
 
 type Context struct {
-	Writer   http.ResponseWriter // http writer
-	Request  *http.Request       // http request
-	Method   string              // request method
-	Path     string              // request path
-	HTTPCode int                 //response code
-	handlers HandlersChain       // router chain
-	index    int                 // chain index
+	Writer      http.ResponseWriter // http writer
+	Request     *http.Request       // http request
+	Method      string              // request method
+	Path        string              // request path
+	HTTPCode    int                 //response code
+	handlers    HandlersChain       // router chain
+	index       int8                // chain index
+	DataStorage pool.DataStorage    // request data storage
+	Trace       trace.Trace         // trace id record
+	log.Log                         // log config
+	Clientset   scheduler.Interface // resoure clientset
+
 }
 
 // abortIndex represents a typical value used in abort functions.
 const abortIndex int8 = math.MaxInt8 >> 1 // 63
 
 func newContext(w http.ResponseWriter, r *http.Request) *Context {
+	l := log.NewLogWithRequest(r)
+	// TODO: trace key config
+	// TODO: clientset init
+	traceKey := log.TraceKey
 	return &Context{
 		Writer:  w,
 		Request: r,
 		Method:  r.Method,
 		Path:    r.URL.Path,
 		index:   -1,
+		Log:     l,
+		Trace:   trace.NewTrace(traceKey, l.GetTraceID()),
 	}
 }
 
 func (c *Context) Next() {
 	c.index++
-	for c.index < len(c.handlers) {
+	for c.index < int8(len(c.handlers)) {
 		c.handlers[c.index](c)
 		c.index++
 	}
+}
+
+func (c *Context) Abort() {
+	c.index = abortIndex
 }
 
 func (c *Context) String(code int, message string, v ...interface{}) {

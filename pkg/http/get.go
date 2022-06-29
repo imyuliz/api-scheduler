@@ -1,14 +1,14 @@
 package http
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/imroc/req"
-	"github.com/imyuliz/api-scheduler/pkg/ctx"
 	"github.com/imyuliz/api-scheduler/pkg/json"
 )
 
-func Get(c ctx.Context, url string, v ...interface{}) (*req.Resp, error) {
+func Get(c context.Context, url string, v ...interface{}) (*req.Resp, error) {
 	return req.Get(url, v)
 }
 
