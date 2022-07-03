@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"time"
 
-	"k8s.io/apimachinery/pkg/runtime"
+	"github.com/imyuliz/api-scheduler/pkg/runtime"
 )
 
 // Request allows for building up a request to a server in a chained fashion.

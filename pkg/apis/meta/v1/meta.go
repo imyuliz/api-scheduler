@@ -19,7 +19,6 @@ package v1
 import (
 	"github.com/imyuliz/api-scheduler/pkg/runtime/schema"
 	"github.com/imyuliz/api-scheduler/pkg/types"
-	"k8s.io/apimachinery/pkg/runtime"
 )
 
 // TODO: move this, Object, List, and Type to a different package
@@ -131,7 +130,7 @@ func (obj *TypeMeta) GroupVersionKind() schema.GroupVersionKind {
 
 func (obj *ListMeta) GetListMeta() ListInterface { return obj }
 
-func (obj *ObjectMeta) GetObjectMeta() runtime.Object { return obj }
+func (obj *ObjectMeta) GetObjectMeta() Object { return obj }
 
 // Namespace implements metav1.Object for any object with an ObjectMeta typed field. Allows
 // fast, direct access to metadata fields for API objects.

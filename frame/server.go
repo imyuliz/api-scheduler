@@ -16,7 +16,7 @@ func NewServer() *Server {
 
 func NewDefaultServer() *Server {
 	s := NewServer()
-	s.Use(Logger(), Cors())
+	s.Use(Cors())
 	return s
 }
 

@@ -5,10 +5,9 @@ import (
 
 	v1 "github.com/imyuliz/api-scheduler/api/apps/v1"
 	metav1 "github.com/imyuliz/api-scheduler/pkg/apis/meta/v1"
+	"github.com/imyuliz/api-scheduler/pkg/runtime"
 
-	// "github.com/imyuliz/api-scheduler/pkg/scheme"
 	"github.com/imyuliz/api-scheduler/rest"
-	"k8s.io/kubectl/pkg/scheme"
 )
 
 type FlowsGetter interface {
@@ -42,7 +41,7 @@ func (f *flow) Get(ctx context.Context, name string, opts metav1.GetOptions) (*v
 		Namespace(f.ns).
 		Resource("flows").
 		Name(name).
-		VersionedParams(&opts, scheme.ParameterCodec).
+		VersionedParams(&opts, runtime.NewParameterCodec(runtime.NewScheme())).
 		Do(ctx).
 		Into(result)
 	return result, err
