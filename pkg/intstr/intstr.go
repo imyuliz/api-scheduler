@@ -25,7 +25,7 @@ import (
 	"strconv"
 	"strings"
 
-	"k8s.io/klog/v2"
+	"github.com/sirupsen/logrus"
 )
 
 // IntOrString is a type that can hold an int32 or a string.  When used in
@@ -57,7 +57,8 @@ const (
 // TODO: convert to (val int32)
 func FromInt(val int) IntOrString {
 	if val > math.MaxInt32 || val < math.MinInt32 {
-		klog.Errorf("value: %d overflows int32\n%s\n", val, debug.Stack())
+		// klog.Errorf("value: %d overflows int32\n%s\n", val, debug.Stack())
+		logrus.Errorf("value: %d overflows int32\n%s\n", val, debug.Stack())
 	}
 	return IntOrString{Type: Int, IntVal: int32(val)}
 }
