@@ -5,6 +5,8 @@ import (
 
 	v1 "github.com/imyuliz/api-scheduler/api/apps/v1"
 	metav1 "github.com/imyuliz/api-scheduler/pkg/apis/meta/v1"
+
+	// "github.com/imyuliz/api-scheduler/pkg/scheme"
 	"github.com/imyuliz/api-scheduler/rest"
 	"k8s.io/kubectl/pkg/scheme"
 )
@@ -14,9 +16,9 @@ type FlowsGetter interface {
 }
 
 type FlowInterface interface {
-	Create(ctx context.Context, deployment *v1.Flow, opts metav1.CreateOptions) (*v1.Flow, error)
-	Update(ctx context.Context, deployment *v1.Flow, opts metav1.UpdateOptions) (*v1.Flow, error)
-	UpdateStatus(ctx context.Context, deployment *v1.Flow, opts metav1.UpdateOptions) (*v1.Flow, error)
+	Create(ctx context.Context, flow *v1.Flow, opts metav1.CreateOptions) (*v1.Flow, error)
+	Update(ctx context.Context, flow *v1.Flow, opts metav1.UpdateOptions) (*v1.Flow, error)
+	UpdateStatus(ctx context.Context, flow *v1.Flow, opts metav1.UpdateOptions) (*v1.Flow, error)
 	Delete(ctx context.Context, name string, opts metav1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts metav1.DeleteOptions, listOpts metav1.ListOptions) error
 	Get(ctx context.Context, name string, opts metav1.GetOptions) (*v1.Flow, error)
@@ -34,6 +36,7 @@ type flow struct {
 }
 
 func (f *flow) Get(ctx context.Context, name string, opts metav1.GetOptions) (*v1.Flow, error) {
+	// runtime.ParameterCodec(scheme.ParameterCodec)
 	result := &v1.Flow{}
 	err := f.client.Get().
 		Namespace(f.ns).

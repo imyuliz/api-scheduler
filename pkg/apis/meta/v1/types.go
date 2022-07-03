@@ -3,7 +3,7 @@ package v1
 import (
 	"time"
 
-	"k8s.io/apimachinery/pkg/types"
+	"github.com/imyuliz/api-scheduler/pkg/types"
 )
 
 type CreateOptions struct {
@@ -16,6 +16,7 @@ type DeleteOptions struct {
 }
 
 type GetOptions struct {
+	TypeMeta `json:",inline"`
 }
 
 type ListOptions struct {
@@ -24,7 +25,7 @@ type ListOptions struct {
 // UID is a type that holds unique ID values, including UUIDs.  Because we
 // don't ONLY use UUIDs, this is an alias to string.  Being a type captures
 // intent and helps make sure that UIDs and names do not get conflated.
-type UID string
+// type UID string
 
 // TypeMeta describes an individual object in an API response or request
 // with strings representing the type of the object and its API schema version.
@@ -105,7 +106,7 @@ type ObjectMeta struct {
 	// Read-only.
 	// More info: http://kubernetes.io/docs/user-guide/identifiers#uids
 	// +optional
-	UID UID `json:"uid,omitempty" protobuf:"bytes,5,opt,name=uid,casttype=k8s.io/kubernetes/pkg/types.UID"`
+	UID types.UID `json:"uid,omitempty" protobuf:"bytes,5,opt,name=uid,casttype=k8s.io/kubernetes/pkg/types.UID"`
 
 	// An opaque value that represents the internal version of this object that can
 	// be used by clients to determine when objects have changed. May be used for optimistic
@@ -248,4 +249,48 @@ type OwnerReference struct {
 	// otherwise 422 (Unprocessable Entity) will be returned.
 	// +optional
 	BlockOwnerDeletion *bool `json:"blockOwnerDeletion,omitempty" protobuf:"varint,7,opt,name=blockOwnerDeletion"`
+}
+
+// ListMeta describes metadata that synthetic resources must have, including lists and
+// various status objects. A resource may have only one of {ObjectMeta, ListMeta}.
+type ListMeta struct {
+	// selfLink is a URL representing this object.
+	// Populated by the system.
+	// Read-only.
+	//
+	// DEPRECATED
+	// Kubernetes will stop propagating this field in 1.20 release and the field is planned
+	// to be removed in 1.21 release.
+	// +optional
+	SelfLink string `json:"selfLink,omitempty" protobuf:"bytes,1,opt,name=selfLink"`
+
+	// String that identifies the server's internal version of this object that
+	// can be used by clients to determine when objects have changed.
+	// Value must be treated as opaque by clients and passed unmodified back to the server.
+	// Populated by the system.
+	// Read-only.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency
+	// +optional
+	ResourceVersion string `json:"resourceVersion,omitempty" protobuf:"bytes,2,opt,name=resourceVersion"`
+
+	// continue may be set if the user set a limit on the number of items returned, and indicates that
+	// the server has more data available. The value is opaque and may be used to issue another request
+	// to the endpoint that served this list to retrieve the next set of available objects. Continuing a
+	// consistent list may not be possible if the server configuration has changed or more than a few
+	// minutes have passed. The resourceVersion field returned when using this continue value will be
+	// identical to the value in the first response, unless you have received this token from an error
+	// message.
+	Continue string `json:"continue,omitempty" protobuf:"bytes,3,opt,name=continue"`
+
+	// remainingItemCount is the number of subsequent items in the list which are not included in this
+	// list response. If the list request contained label or field selectors, then the number of
+	// remaining items is unknown and the field will be left unset and omitted during serialization.
+	// If the list is complete (either because it is not chunking or because this is the last chunk),
+	// then there are no more remaining items and this field will be left unset and omitted during
+	// serialization.
+	// Servers older than v1.15 do not set this field.
+	// The intended use of the remainingItemCount is *estimating* the size of a collection. Clients
+	// should not rely on the remainingItemCount to be set or to be exact.
+	// +optional
+	RemainingItemCount *int64 `json:"remainingItemCount,omitempty" protobuf:"bytes,4,opt,name=remainingItemCount"`
 }

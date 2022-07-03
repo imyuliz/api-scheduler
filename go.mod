@@ -7,7 +7,6 @@ require (
 	github.com/imroc/req v0.3.2
 	github.com/sirupsen/logrus v1.8.1
 	github.com/tidwall/gjson v1.14.1
-	k8s.io/api v0.24.2
 	k8s.io/apimachinery v0.24.2
 	k8s.io/klog/v2 v2.60.1
 	k8s.io/kubectl v0.24.2

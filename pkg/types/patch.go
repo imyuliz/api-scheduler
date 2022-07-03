@@ -11,3 +11,5 @@ const (
 	StrategicMergePatchType PatchType = "application/strategic-merge-patch+json"
 	ApplyPatchType          PatchType = "application/apply-patch+yaml"
 )
+
+type UID string

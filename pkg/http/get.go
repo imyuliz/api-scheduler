@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/imroc/req"
-	"github.com/imyuliz/api-scheduler/pkg/json"
+	"github.com/imyuliz/api-scheduler/utils/json"
 )
 
 func Get(c context.Context, url string, v ...interface{}) (*req.Resp, error) {
