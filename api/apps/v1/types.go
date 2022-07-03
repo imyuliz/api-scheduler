@@ -2,7 +2,9 @@ package v1
 
 import (
 	metav1 "github.com/imyuliz/api-scheduler/pkg/apis/meta/v1"
-	"github.com/imyuliz/api-scheduler/pkg/util/intstr"
+	"github.com/imyuliz/api-scheduler/pkg/intstr"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 type Flow struct {
@@ -12,6 +14,13 @@ type Flow struct {
 	metav1.ObjectMeta `json:",inline"`
 	Spec              FlowSpec   `json:"spec"`
 	Status            FlowStatus `json:"status"`
+}
+
+func (f *Flow) GetObjectKind() schema.ObjectKind {
+	return nil
+}
+func (f *Flow) DeepCopyObject() v1.Object {
+	return nil
 }
 
 type FlowSpec struct {

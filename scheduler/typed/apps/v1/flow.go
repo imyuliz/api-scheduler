@@ -35,12 +35,12 @@ type flow struct {
 
 func (f *flow) Get(ctx context.Context, name string, opts metav1.GetOptions) (*v1.Flow, error) {
 	result := &v1.Flow{}
-	err = f.client.Get().
+	err := f.client.Get().
 		Namespace(f.ns).
-		Resource("deployments").
+		Resource("flows").
 		Name(name).
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Do(ctx).
 		Into(result)
-	return
+	return result, err
 }
