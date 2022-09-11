@@ -18,9 +18,9 @@ type FlowInterface interface {
 	Create(ctx context.Context, flow *v1.Flow, opts metav1.CreateOptions) (*v1.Flow, error)
 	Update(ctx context.Context, flow *v1.Flow, opts metav1.UpdateOptions) (*v1.Flow, error)
 	UpdateStatus(ctx context.Context, flow *v1.Flow, opts metav1.UpdateOptions) (*v1.Flow, error)
-	Delete(ctx context.Context, name string, opts metav1.DeleteOptions) error
+	Delete(ctx context.Context, url string, opts metav1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts metav1.DeleteOptions, listOpts metav1.ListOptions) error
-	Get(ctx context.Context, name string, opts metav1.GetOptions) (*v1.Flow, error)
+	Get(ctx context.Context, url string, opts metav1.GetOptions) (*v1.Flow, error)
 	List(ctx context.Context, opts metav1.ListOptions) (*v1.Flow, error)
 	// Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error)
 	// Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.Deployment, err error)

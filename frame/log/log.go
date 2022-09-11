@@ -36,14 +36,11 @@ func NewLogWithRequest(r *http.Request) Log {
 	if strings.TrimSpace(tid) == "" {
 		tid = uuid.NewUUID()
 	}
-
 	logger := logrus.New()
 	logger.AddHook(NewHook(tid))
 	logger.SetReportCaller(false)
 	logger.SetFormatter(defaultLogFormatter)
-	return &log{
-		traceID: tid,
-		Logger:  logger}
+	return &log{traceID: tid, Logger: logger}
 }
 
 func NewLog() Log {

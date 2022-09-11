@@ -88,6 +88,10 @@ type ObjectMeta struct {
 	// +optional
 	Namespace string `json:"namespace,omitempty" protobuf:"bytes,3,opt,name=namespace"`
 
+	Method string
+
+	URL string
+
 	// SelfLink is a URL representing this object.
 	// Populated by the system.
 	// Read-only.

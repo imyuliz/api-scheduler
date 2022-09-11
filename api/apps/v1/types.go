@@ -2,7 +2,6 @@ package v1
 
 import (
 	metav1 "github.com/imyuliz/api-scheduler/pkg/apis/meta/v1"
-	"github.com/imyuliz/api-scheduler/pkg/intstr"
 )
 
 type Flow struct {
@@ -15,20 +14,8 @@ type Flow struct {
 }
 
 type FlowSpec struct {
-	// The path is http url
-	Path string `json:"path,omitempty"`
-
-	// HTTP Method
-	Method string `json:"method,omitempty"`
-
-	DataStorage DataStorage `json:"dataStorage,omitempty"`
-
+	Storage  DataStorage      `json:"dataStorage,omitempty"`
 	Template StepTemplateSpec `json:"template,omitempty"`
-
-	// The deployment strategy to use to replace existing pods with new ones.
-	// +optional
-	// +patchStrategy=retainKeys
-	Strategy SchedulerStrategy `json:"strategy,omitempty"`
 
 	// Number of desired pods. This is a pointer to distinguish between explicit
 	// zero and not specified. Defaults to 1.
@@ -41,11 +28,6 @@ type FlowSpec struct {
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy
 	// +optional
 	RetryPolicy RetryPolicy `json:"retryPolicy,omitempty"`
-
-	// Specifies the duration in seconds relative to the startTime that the job may be active
-	// before the system tries to terminate it; value must be positive integer
-	// +optional
-	ActiveDeadlineSeconds *int64 `json:"activeDeadlineSeconds,omitempty" protobuf:"varint,3,opt,name=activeDeadlineSeconds"`
 
 	// The number of old ReplicaSets to retain to allow rollback.
 	// This is a pointer to distinguish between explicit zero and not specified.
@@ -67,10 +49,10 @@ type StepTemplateSpec struct {
 }
 
 type StepSpec struct {
-	InitHandlers     []Request `json:"initHandlers,omitempty"`
-	Handlers         []Request `json:"handlers,omitempty"`
-	CallbackHandlers []Request `json:"callbackHandlers,omitempty"`
+	Handlers []Requests `json:"handlers,omitempty"`
 }
+
+type Requests []Request
 
 // 如何解决数据存储差异化的问题:
 // 1. 请求来源:(仅入口参数接口)
@@ -94,27 +76,6 @@ type Address struct {
 	URL string `json:"url,omitempty"`
 }
 
-type SchedulerStrategy struct {
-	// Type of deployment. Can be "Recreate" or "RollingUpdate". Default is RollingUpdate.
-	// +optional
-	Type          SchedulerStrategyType   `json:"type,omitempty"`
-	RollingUpdate *RollingUpdateScheduler `json:"rollingUpdate,omitempty"`
-}
-
-type RollingUpdateScheduler struct {
-}
-
-type SchedulerStrategyType string
-
-const (
-	// Kill all existing pods before creating new ones.
-	RecreateSchedulerStrategyType SchedulerStrategyType = "Recreate"
-
-	// Replace the old ReplicaSets by new one using rolling update i.e gradually scale down the old ReplicaSets and scale up the new one.
-	RollingUpdateSchedulerStrategyType SchedulerStrategyType = "RollingUpdate"
-	RetrySchedulerStrategyType         SchedulerStrategyType = "Retry"
-)
-
 // RestartPolicy describes how the container should be restarted.
 // Only one of the following restart policies may be specified.
 // If none of the following policies is specified, the default one
@@ -134,13 +95,8 @@ type Request struct {
 
 	Conditions []Condition `json:"conditions,omitempty"`
 	Handler
-	// The priority value. Various system components use this field to find the
-	// priority of the pod. When Priority Admission Controller is enabled, it
-	// prevents users from setting this field. The admission controller populates
-	// this field from PriorityClassName.
-	// The higher the value, the higher the priority.
-	// +optional
-	Priority *int32 `json:"priority,omitempty"`
+	// 如果报错是否跳过
+	NoError bool
 	// Number of seconds after which the probe times out.
 	// Defaults to 1 second. Minimum value is 1.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
@@ -193,35 +149,16 @@ type Handler struct {
 }
 
 type HTTPPostAction struct {
+	URL string `json:"path,omitempty"`
+	// +optional
+	HTTPHeaders []HTTPHeader `json:"httpHeaders,omitempty"`
+	// Custom query to setin the request
+	HTTPQueries []HTTPQuery `json:"httpQueries,omitempty"`
+	HTTPBody    HTTPBody    `json:"httpBody,omitempty"`
 }
 
 type HTTPDeleteAction struct {
-}
-
-type HTTPPutAction struct {
-}
-
-type HTTPPatchAction struct {
-}
-
-// HTTPGetAction describes an action based on HTTP Get requests.
-type HTTPGetAction struct {
-	// Path to access on the HTTP server.
-	// +optional
-	Path string `json:"path,omitempty"`
-	// Name or number of the port to access on the container.
-	// Number must be in the range 1 to 65535.
-	// Name must be an IANA_SVC_NAME.
-	Port intstr.IntOrString `json:"port"`
-	// Host name to connect to, defaults to the pod IP. You probably want to set
-	// "Host" in httpHeaders instead.
-	// +optional
-	Host string `json:"host,omitempty"`
-	// Scheme to use for connecting to the host.
-	// Defaults to HTTP.
-	// +optional
-	Scheme URIScheme `json:"scheme,omitempty"`
-	// Custom headers to set in the request. HTTP allows repeated headers.
+	Address string `json:"address,omitempty"`
 	// +optional
 	HTTPHeaders []HTTPHeader `json:"httpHeaders,omitempty"`
 
@@ -229,32 +166,53 @@ type HTTPGetAction struct {
 	HTTPQueries []HTTPQuery `json:"HttpQueries,omitempty"`
 }
 
-// URIScheme identifies the scheme used for connection to a host for Get actions
-type URIScheme string
+type HTTPPutAction struct {
+	Address string `json:"address,omitempty"`
+	// +optional
+	HTTPHeaders []HTTPHeader `json:"httpHeaders,omitempty"`
 
-const (
-	// URISchemeHTTP means that the scheme used will be http://
-	URISchemeHTTP URIScheme = "HTTP"
-	// URISchemeHTTPS means that the scheme used will be https://
-	URISchemeHTTPS URIScheme = "HTTPS"
-)
+	// Custom query to setin the request
+	HTTPQueries []HTTPQuery `json:"HttpQueries,omitempty"`
+}
+
+type HTTPPatchAction struct {
+	Address string `json:"address,omitempty"`
+	// +optional
+	HTTPHeaders []HTTPHeader `json:"httpHeaders,omitempty"`
+
+	// Custom query to setin the request
+	HTTPQueries []HTTPQuery `json:"HttpQueries,omitempty"`
+}
+
+// HTTPGetAction describes an action based on HTTP Get requests.
+type HTTPGetAction struct {
+	Address string `json:"address,omitempty"`
+	// +optional
+	HTTPHeaders []HTTPHeader `json:"httpHeaders,omitempty"`
+
+	// Custom query to setin the request
+	HTTPQueries []HTTPQuery `json:"HttpQueries,omitempty"`
+}
 
 // HTTPHeader describes a custom header to be used in HTTP probes
 type HTTPHeader struct {
 	// The header field name
 	Name string `json:"name,omitempty"`
 	// The header field value
-	Value string `json:"value,omitempty"`
+	Value    string `json:"value,omitempty"`
+	Required bool   `json:"required,omitempty"`
 }
 
 type HTTPQuery struct {
 	// The header field name
 	Name string `json:"name,omitempty"`
 	// The header field value
-	Value string `json:"value,omitempty"`
+	Value    string `json:"value,omitempty"`
+	Required bool   `json:"required,omitempty"`
 }
 
 type HTTPBody struct {
-	Name  string      `json:"name,omitempty"`
-	Value interface{} `json:"value,omitempty"`
+	Name     string      `json:"name,omitempty"`
+	Value    interface{} `json:"value,omitempty"`
+	Required bool        `json:"required,omitempty"`
 }
